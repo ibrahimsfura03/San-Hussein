@@ -1,0 +1,22 @@
+/* *{
+    border: 1px solid red;
+} */
+.header{
+    height: 500px;
+}
+.nav-links{
+    font-size: 18px;
+    color: rgb(233, 233, 233) !important;
+    margin: 0px 15px 0px 15px;
+}
+/* .mapimg{
+    margin-top: 110px;
+    background-image: #eef5 url("/images/san.jpg");
+    background-repeat: no-repeat;
+    background-position: right top;
+    background-attachment: fixed;
+} */
+.product_card{
+    float: left;
+    /* background-color: blueviolet; */
+}

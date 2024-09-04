@@ -1,0 +1,31 @@
+.container_main {
+    margin-top: -15px;
+}
+
+.list-group a {
+    background-color: #BCD988;
+    color: #ffffff;
+    border-bottom: none;
+    margin: 0px;
+    padding: 5px;
+}
+
+.sticky-top input[type=text] {
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('../assets/icons/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    width: 100%;
+}
+
+.big_footer h5 {
+    border-bottom: 2px solid #28a745;
+}
+
+/* subscription page */
+.subscription .card:hover {
+    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.2);
+}

@@ -1,5 +1,5 @@
 <?php
-$connection = mysqli_connect('localhost', 'root', '', 'san_hussain');
+$connection = mysqli_connect('localhost:3307', 'root', '8569IBB', 'san_hussain');
     if (!$connection){
         die("Not Connected");
     }else{

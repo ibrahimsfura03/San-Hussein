@@ -53,70 +53,59 @@ if (!isset($_SESSION['user_name'])) {
                         </div>
                         <hr class="mx-4">
                         <ul class="list-group mx-4 mb-2">
-                            <?php
+    <?php
+    // Order Notifications
+    if (isset($_GET['order_profile'])) {
+        $user_id = $_GET['order_profile'];
+    }
+    $order_query = "SELECT * FROM orders WHERE order_user_id = {$user_id} AND (order_status = 'pending' OR order_status = 'Deliverd')";
+    $select_order_query = mysqli_query($connection, $order_query);
+    if (mysqli_num_rows($select_order_query) > 0) {
+        while ($row = mysqli_fetch_assoc($select_order_query)) {
+            $order_id = $row['order_id'];
+            $order_status = $row['order_status'];
+            $order_date = $row['order_date'];
 
-                            if (isset($_GET['order_profile'])) {
-                                $user_id = $_GET['order_profile'];
-                            }
+            if ($order_status == 'Deliverd') {
+                $deliverd = "<p>Your Order has been delivered successfully <small class='float-right'>$order_date</small></p>";
+                echo "<a href='orders.php' class='list-group-link text-dark notifylink'>
+                         <li class='list-group-item'>
+                             $deliverd 
+                         </li>
+                      </a>";
+            } elseif ($order_status == 'pending') {
+                $pending = "<p>New Order has been Placed successfully <small class='float-right'>$order_date</small></p>";
+                echo "<a href='orders.php' class='list-group-link text-dark notifylink'>
+                         <li class='list-group-item'>
+                             $pending 
+                         </li>
+                      </a>";
+            }
+        }
+    }
 
-                            $query = "SELECT * FROM orders WHERE order_user_id = {$user_id} AND order_status = 'pending' OR order_status = 'Deliverd' ";
-                            $select_order_query = mysqli_query($connection, $query);
-
-                            while ($row = mysqli_fetch_assoc($select_order_query)) {
-                                $order_id = $row['order_id'];
-                                $order_status = $row['order_status'];
-                                $order_date = $row['order_date'];
-                            }
-                            if ($order_status == 'Deliverd') {
-                                $deliverd = "<p>Your Order has been deliverd successfully <small class='float-right'>$order_date</small></p>";
-
-                                echo "<a href='orders.php' class='list-group-link text-dark notifylink'>
-                                     <li class='list-group-item'>
-                                         $deliverd 
-                                     </li>
-                                 </a>";
-                            } elseif ($order_status == 'pending') {
-                                $pending = "<p>New Order has been Placed successfully <small class='float-right'>$order_date</small></p>";
-
-                                echo "<a href='orders.php' class='list-group-link text-dark notifylink'>
-                                     <li class='list-group-item'>
-                                         $pending 
-                                     </li>
-                                 </a>";
-                            }
-
-
-                            ?>
-
-                            <?php
-                            if (isset($_GET['update_profile'])) {
-                                $the_user_id = $_GET['update_profile'];
-                            }
-
-                            $query = "SELECT * FROM carts WHERE user_cart_id = {$the_user_id}";
-                            $slect_cart_query = mysqli_query($connection, $query);
-
-
-
-                            while ($row = mysqli_fetch_assoc($select_cart_query)) {
-                                $cart_name = $row['cart_name'];
-                                $cart_image = $row['cart_image'];
-                                $cart_quantity = $row['cart_quantity'];
-                                $cart_price = $row['cart_price'];
-                                $cart_date = date('Y-m-d');
-                            }
-                            $total_product_price = $cart_quantity * $cart_price;
-
-                            echo "<a href='cart.php' class='list-group-link text-dark notifylink'>
-                                <li class='list-group-item'>
-
-
-                                   ($cart_quantity) $cart_name has been added to cart at $$total_product_price   <small class='float-right'>$cart_date</small>
-                                </li>
-                            </a>";
-
-                            ?>
-                        </ul>
+    // Cart Notifications
+    if (isset($_GET['update_profile'])) {
+        $the_user_id = $_GET['update_profile'];
+    }
+    $cart_query = "SELECT * FROM carts WHERE user_cart_id = {$the_user_id}";
+    $select_cart_query = mysqli_query($connection, $cart_query);
+    if (mysqli_num_rows($select_cart_query) > 0) {
+        while ($row = mysqli_fetch_assoc($select_cart_query)) {
+            $cart_name = $row['cart_name'];
+            $cart_quantity = $row['cart_quantity'];
+            $cart_price = $row['cart_price'];
+            $cart_date = date('Y-m-d');
+            $total_product_price = $cart_quantity * $cart_price;
+            echo "<a href='cart.php' class='list-group-link text-dark notifylink'>
+                     <li class='list-group-item'>
+                         ($cart_quantity) $cart_name has been added to cart at $$total_product_price <small class='float-right'>$cart_date</small>
+                     </li>
+                  </a>";
+        }
+    }
+    ?>
+</ul>
 
 
 

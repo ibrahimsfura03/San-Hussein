@@ -33,13 +33,14 @@ include "../includes/db.php";
     <!--********************* main notify **********************-->
 
     <?php
-    $query = "SELECT * FROM orders";
-    $select_all_orders_query = mysqli_query($connection, $query);
+$query = "SELECT * FROM orders ORDER BY order_date DESC";
+$select_all_orders_query = mysqli_query($connection, $query);
 
-    if (!$select_all_orders_query) {
-        die("Query failed") . mysqli_error($connection);
-    }
-    ?>
+if (!$select_all_orders_query) {
+    die("Query failed: " . mysqli_error($connection));
+}
+?>
+
 
     <!--
 ************************************************************************************************* -->
@@ -100,36 +101,16 @@ include "../includes/db.php";
 
 
             <form action="" method="POST">
-                    <div class="row">
-
-                        <div class="col-md-5">
-                            <select class="form-control w-100" name="bulk_option" id="">
-                                <option value="">Select Option</option>
-                                <option value="placed">Approve</option>
-                                <option value="pending">Unapprove</option>
-                                <option value="delete">Delete</option>
-                            </select>
-                        </div>
-
-
-
-                        <div class="col-md-5">
-                            <input type="submit" value="Apply" class="btn btn-success">
-                        </div>
-
-                    </div>
+                   
 
 
                     <table class="table table-striped table-borderd table-hover">
                         <thead class="bg-dark text-light">
                             <tr>
-                                <th><input type="checkbox" name="" class="form-check-input" id="checkAllBoxes"></th>
                                 <th>ID</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Status</th>
-                                <th>Approve</th>
-                                <th>Unapprove</th>
                                 <th>Payment</th>
                                 <th>Address</th>
                                 <th>Name</th>
@@ -145,8 +126,6 @@ include "../includes/db.php";
                                 $order_price = $row['order_total_price'];
                                 $order_quantity = $row['order_total_quantity'];
                                 $order_status = $row['order_status'];
-                                $order_unapprove = $row['order_unapprove'];
-                                $order_approve = $row['order_approve'];
                                 $order_payment = $row['order_payment_type'];
                                 $order_address = $row['order_address'];
                                 $order_user_name = $row['order_user_name'];
@@ -158,17 +137,15 @@ include "../includes/db.php";
                                 echo "<tr>";
                             ?>
 
-                                <td><input type='checkbox' name='checkBoxArray[]' class='form-check-input checkbox' id='checkAllBoxes' value="<?php echo $order_id ?>"></td>
-                            <?php
+                           
+<?php
 
 
                                 echo "<td>$order_id</td>";
                                 echo "<td>$$order_price</td>";
                                 echo "<td>$order_quantity</td>";
                                 echo "<td>$order_status</td>";
-                                echo "<td><a href='orders.php?approve={$order_id}'>Approve</a></td>";
-                                echo "<td><a href='orders.php?unapprove={$order_id}'>Unapprove</a></td>";
-                                echo "<td>$order_payment</td>";
+                                 echo "<td>$order_payment</td>";
                                 echo "<td>$order_address</td>";
                                 echo "<td><a href='users.php?u_name={$order_user_id}'>$order_user_name</a></td>";
                                 echo "<td>$order_date</td>";

@@ -30,13 +30,14 @@ include "../includes/db.php";
     <!--********************* main notify **********************-->
 
     <?php
-    $query = "SELECT * FROM orders WHERE order_status = 'placed' ";
-    $select_all_orders_query = mysqli_query($connection, $query);
+$query = "SELECT * FROM orders WHERE order_status = 'placed' ORDER BY order_date DESC";
+$select_all_orders_query = mysqli_query($connection, $query);
 
-    if (!$select_all_orders_query) {
-        die("Query failed") . mysqli_error($connection);
-    }
-    ?>
+if (!$select_all_orders_query) {
+    die("Query failed: " . mysqli_error($connection));
+}
+?>
+
 
     <!--
 ************************************************************************************************* -->

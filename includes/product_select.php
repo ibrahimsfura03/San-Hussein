@@ -57,32 +57,35 @@ $user_id = $_SESSION['user_id'];
                         }
                     ?>
 
-                        <?php
-                        if (isset($_POST['addcart'])) {
-                            $user_id = $_POST['user_cart_id'];
-                            $product_id = $_POST['product_cart_id'];
-                            $cart_name = $_POST['cart_name'];
-                            $cart_image = $_POST['cart_image'];
-                            $cart_price = $_POST['cart_price'];
-                            $cart_quantity = $_POST['cart_quantity'];
+<?php
+if (isset($_POST['addcart'])) {
+    $user_id = $_POST['user_cart_id'];
+    $product_id = $_POST['product_cart_id'];
+    $cart_name = $_POST['cart_name'];
+    $cart_image = $_POST['cart_image'];
+    $cart_price = $_POST['cart_price'];
+    $cart_quantity = $_POST['cart_quantity'];
 
-                            $query = "INSERT INTO carts (user_cart_id, cart_name, product_cart_id, cart_image, cart_price, cart_quantity) ";
-                            $query .= "VALUES ('{$user_id}', '{$cart_name}', '{$product_id}', '{$cart_image}', '{$cart_price}', '{$cart_quantity}')";
+    // Check if product is already in the cart
+    $check_query = "SELECT * FROM carts WHERE user_cart_id = '{$user_id}' AND product_cart_id = '{$product_id}'";
+    $check_result = mysqli_query($connection, $check_query);
 
-                            $inset_cart_query = mysqli_query($connection, $query);
+    if (mysqli_num_rows($check_result) > 0) {
+        $successMsg = "<h6 class='text-bold text-danger text-center'>Product already added to cart!</h6>";
+    } else {
+        $query = "INSERT INTO carts (user_cart_id, cart_name, product_cart_id, cart_image, cart_price, cart_quantity) ";
+        $query .= "VALUES ('{$user_id}', '{$cart_name}', '{$product_id}', '{$cart_image}', '{$cart_price}', '{$cart_quantity}')";
+        $inset_cart_query = mysqli_query($connection, $query);
 
-                            if (!$inset_cart_query) {
-                                die("QUERY FAILED: " . mysqli_error($connection));
-                            } else {
-                                $successMsg = "<h6 class='text-bold text-success text-center'>Product added to cart successfully!</h6>";
-                            }
-                        }
-                        ?>
-                        <?php
-                        if (isset($successMsg)) {
-                            echo $successMsg;
-                        }
-                        ?>
+        if (!$inset_cart_query) {
+            die("QUERY FAILED: " . mysqli_error($connection));
+        } else {
+            $successMsg = "<h6 class='text-bold text-success text-center'>Product added to cart successfully!</h6>";
+        }
+    }
+}
+?>
+
                         <form action="" method="POST">
                             <div class="text-center font-weight-bold pt-3">
                                 <div class="clearfix mx-4">
@@ -98,6 +101,14 @@ $user_id = $_SESSION['user_id'];
                                         ?>
                                     </a>
                                 </div>
+                                <h4>
+                                    <?php
+                                        if(isset($successMsg)){
+                                            echo $successMsg;
+                                        }
+                                    ?>
+                                
+                                </h4>
                                 <h6><b class="text-danger">Price</b> $<?php echo $product_price; ?></h6>
                             </div>
                             <img src="../images/<?php echo $product_image; ?>" alt="<?php echo $product_name; ?>" class="img-fluid mx-auto" width="100">

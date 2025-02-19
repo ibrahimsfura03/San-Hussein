@@ -184,7 +184,6 @@ include "includes/user_navigation.php";
                                                                     <option value="<?php echo $user_gender; ?>"><?php echo $user_gender; ?></option>
                                                                     <option value="Male">Male</option>
                                                                     <option value="Female">Female</option>
-                                                                    <option value="others">Others</option>
                                                                 </select>
                                                             </div>
                                                         </div>

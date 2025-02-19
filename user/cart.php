@@ -32,11 +32,12 @@ if (!isset($_SESSION['user_name'])) {
 
     ?>
 
-    <?php
-    $query = "SELECT * FROM carts WHERE user_cart_id = {$user_id}";
-    $slect_cart_query = mysqli_query($connection, $query);
+<?php
+// Fetch carts with newest products appearing first
+$query = "SELECT * FROM carts WHERE user_cart_id = {$user_id} ORDER BY cart_id DESC";
+$slect_cart_query = mysqli_query($connection, $query);
+?>
 
-    ?>
     <?php
     if (isset($_GET['update_profile'])) {
         $the_user_id = $_GET['update_profile'];
@@ -216,19 +217,19 @@ if (!isset($_SESSION['user_name'])) {
                         </div> -->
 
                         <div class="pt-2 w-100">
-                            <a href='../index_access.php'>
-                                <button class='btn btn-info btn-block my-2'>Continue Shipping <span class='mdi mdi-cart-outline'></span></button>
-                            </a>
-                            <?php
-                            if (isset($_SESSION['user_id'])) {
-                                $user_id = $_SESSION['user_id'];
-                            ?>
-                            <?php echo "<a href='payment.php?p_id={$user_id}' class=''>
-                                <button class='btn btn-info btn-block'>Continue to <strong>Check Out</strong> <span class='mdi mdi-checkbox-marked-circle-outline'></span></button>
-                            </a> ";
-                            }
-                            ?>
-                        </div>
+    <a href='../index_access.php'>
+        <button class='btn btn-info btn-block my-2'>Continue Shipping <span class='mdi mdi-cart-outline'></span></button>
+    </a>
+    <?php
+    if (isset($_SESSION['user_id']) && $carts_count > 0) {
+        $user_id = $_SESSION['user_id'];
+        echo "<a href='payment.php?p_id={$user_id}' class=''>
+            <button class='btn btn-info btn-block'>Continue to <strong>Check Out</strong> <span class='mdi mdi-checkbox-marked-circle-outline'></span></button>
+        </a>";
+    }
+    ?>
+</div>
+
                     </div>
                 </div>
             </div>

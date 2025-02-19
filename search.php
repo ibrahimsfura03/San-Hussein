@@ -6,7 +6,7 @@ include "includes/db.php";
     <div class="fixed-top">
         <nav class="navbar navbar-expand-md navbar-light bg-light">
             <div class="navbar-brand">
-                <a href="index.php" class="nav-link text-dark">
+                <a href="index_access.php" class="nav-link text-dark">
                     <h3 class="font-weight-bold"><i>San-Hussein</i></h3>
                 </a>
             </div>
@@ -15,7 +15,7 @@ include "includes/db.php";
     </div>
 </div>
 
-<div class="main mt-5 pt-5">
+<div class="">
     <?php
     // Check if the search form was submitted via GET
     if (isset($_GET['submit'])) {
@@ -33,6 +33,8 @@ include "includes/db.php";
         } else {
             echo "<div class='container my-4'><div class='row'>";
             while ($row = mysqli_fetch_assoc($search_query)) {
+                // Assuming product_id exists in your products table
+                $product_id          = $row['product_id'];
                 $product_name        = $row['product_name'];
                 $product_image       = $row['product_image'];
                 $product_price       = $row['product_price'];
@@ -45,6 +47,7 @@ include "includes/db.php";
                             <h5 class="card-title"><?php echo $product_name; ?></h5>
                             <p class="card-text"><?php echo $product_description; ?></p>
                             <p class="card-text"><strong>Price: $<?php echo $product_price; ?></strong></p>
+                            <a href="includes/product_select.php?<?php echo $product_id; ?>" class="btn btn-primary btn-sm">View Product</a>
                         </div>
                     </div>
                 </div>

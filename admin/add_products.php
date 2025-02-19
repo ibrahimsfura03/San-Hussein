@@ -31,30 +31,27 @@ include "../includes/db.php";
 
 
     <?php
-    if (isset($_POST['create'])) {
-        $product_name = $_POST['product_name'];
-        $product_category = $_POST['product_category'];
-        $product_price = $_POST['product_price'];
+if (isset($_POST['create'])) {
+    $product_name = $_POST['product_name'];
+    $product_category = $_POST['product_category'];
+    $product_price = $_POST['product_price'];
 
-        $product_image = '';
-        $product_image_tmp = '';
+    $product_image = $_FILES['product_image']['name'];
+    $product_image_tmp = $_FILES['product_image']['tmp_name'];
 
-        $product_image = $_FILES['product_image']['name'];
-        $product_image_tmp = $_FILES['product_image']['tmp_name'];
+    move_uploaded_file($product_image_tmp, "../image/$product_image");
 
-        move_uploaded_file($product_image_tmp, "../image/$product_image");
+    $product_quantity = $_POST['product_quantity'];
+    $product_tag = $_POST['product_tag'];
+    $product_description = $_POST['product_description'];
 
-        $product_quantity = $_POST['product_quantity'];
-        $product_tag = $_POST['product_tag'];
-        $product_description = $_POST['product_description'];
+    $query = "INSERT INTO products (product_name, product_category, product_price, product_image, product_quantity, product_tag, product_description) ";
+    $query .= "VALUES ('{$product_name}', '{$product_category}', '{$product_price}', '{$product_image}', '{$product_quantity}', '{$product_tag}', '{$product_description}')";
 
+    $create_products_query = mysqli_query($connection, $query);
+}
+?>
 
-        $query = "INSERT INTO products (product_name, product_category, product_price, product_image, product_tag, product_description) ";
-        $query .= "VALUES ('{$product_name}', '{$product_category}', '{$product_price}', '{$product_image}', '{$product_tag}', '{$product_description}')";
-
-        $create_products_query = mysqli_query($connection, $query);
-    }
-    ?>
 
 
     <!--

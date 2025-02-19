@@ -116,9 +116,10 @@ if (isset($_POST['addcart'])) {
                                 <p><?php echo $product_description; ?></p>
                                 <label for="quantity">Quntity:</label>
                                 <div class="input-group">
+                                <button type="button" class="btn btn-secondary" onclick="decrementQuantity()">-</button>
+                                <input type="number" name="cart_quantity" value="1" min="1" max="<?php echo $product_quantity; ?>" id="quantity" class="form-control">
                                     <button type="button" class="btn btn-secondary" onclick="incrementQuantity()">+</button>
-                                    <input type="number" name="cart_quantity" value="1" min="1" max="<?php echo $product_quantity; ?>" id="quantity" class="form-control">
-                                    <button type="button" class="btn btn-secondary" onclick="decrementQuantity()">-</button>
+                                    
                                 </div>
                                 <div class="clearfix mt-2">
                                     <div class="float-left">

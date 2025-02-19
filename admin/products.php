@@ -58,22 +58,23 @@ include "../includes/db.php";
 
 
 
-                <?php
-                $query = "SELECT * FROM products";
-                $select_product_query = mysqli_query($connection, $query);
+            <?php
+    // Order products by product_id in descending order so the newest appear at the top
+    $query = "SELECT * FROM products ORDER BY product_id DESC";
+    $select_product_query = mysqli_query($connection, $query);
 
-                while ($row = mysqli_fetch_assoc($select_product_query)) {
-                    $product_id = $row['product_id'];
-                    $product_name = $row['product_name'];
-                    $product_category = $row['product_category'];
-                    $product_image = $row['product_image'];
-                    $product_price = $row['product_price'];
-                    $product_quantity = $row['product_quantity'];
-                    $product_purchase = $row['product_purchase'];
-                    $product_tag = $row['product_tag'];
-                    $product_description = $row['product_description'];
+    while ($row = mysqli_fetch_assoc($select_product_query)) {
+        $product_id = $row['product_id'];
+        $product_name = $row['product_name'];
+        $product_category = $row['product_category'];
+        $product_image = $row['product_image'];
+        $product_price = $row['product_price'];
+        $product_quantity = $row['product_quantity'];
+        $product_purchase = $row['product_purchase'];
+        $product_tag = $row['product_tag'];
+        $product_description = $row['product_description'];
+?>
 
-                ?>
 
                 <?php
 

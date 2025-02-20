@@ -57,36 +57,45 @@ include "../includes/db.php";
         $product_id = $_GET['p_id'];
         $product_name = $_POST['product_name'];
         $product_category = $_POST['product_category'];
-
-        $product_image = '';
-        $product_image_tmp = '';
-
+    
+        // Check if a new image was uploaded
         $product_image = $_FILES['product_image']['name'];
         $product_image_tmp = $_FILES['product_image']['tmp_name'];
-
-        move_uploaded_file($product_image_tmp, "../image/$product_image");
-
+    
+        if (empty($product_image)) {
+            // No new image uploaded; retain the existing image from the database
+            $query = "SELECT product_image FROM products WHERE product_id = {$product_id}";
+            $select_image = mysqli_query($connection, $query);
+            $row = mysqli_fetch_assoc($select_image);
+            $product_image = $row['product_image'];
+        } else {
+            // New image uploaded; move the file to the images folder
+            move_uploaded_file($product_image_tmp, "../image/$product_image");
+        }
+    
         $product_price = $_POST['product_price'];
         $product_quantity = $_POST['product_quantity'];
         $product_tag = $_POST['product_tag'];
         $product_description = $_POST['product_description'];
-
+    
         $query = "UPDATE products SET product_name = '{$product_name}', 
-        product_category = '{$product_category}', product_image = '{$product_image}', 
-        product_price = '{$product_price}', product_quantity = '{$product_quantity}', 
-        product_description = '{$product_description}', 
-        product_tag = '{$product_tag}' WHERE product_id = {$product_id}";
-
+                  product_category = '{$product_category}', 
+                  product_image = '{$product_image}', 
+                  product_price = '{$product_price}', 
+                  product_quantity = '{$product_quantity}', 
+                  product_description = '{$product_description}', 
+                  product_tag = '{$product_tag}' 
+                  WHERE product_id = {$product_id}";
+    
         $update_product_query = mysqli_query($connection, $query);
-
+    
         if (!$update_product_query) {
-            die("Query Failed" . mysqli_error($connection));
-        }else{
-            $successMsg = "<p class='text-success text-center text-bold'>Updated Successfully :) <a href='products.php'>view product!</a></p>";
+            die("Query Failed: " . mysqli_error($connection));
+        } else {
+            $successMsg = "<p class='text-success text-center text-bold'>Updated Successfully :) <a href='products.php'>View product!</a></p>";
         }
-
-        // header("Location:view_all_products.php");
     }
+    
 
 
     ?>

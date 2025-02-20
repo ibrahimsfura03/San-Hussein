@@ -52,60 +52,59 @@ include "../includes/db.php";
                         </div>
                         <hr class="mx-4">
                         <ul class="list-group mx-4 mb-2">
-                            <?php
+    <?php
+    // Initialize notifications arrays
+    $order_notifications = array();
+    $user_notifications = array();
 
-                            $query = "SELECT * FROM orders WHERE order_status = 'pending' OR order_status = 'Deliverd' ";
-                            $select_order_query = mysqli_query($connection, $query);
+    // Get order notifications
+    $query = "SELECT * FROM orders WHERE order_status = 'pending' OR order_status = 'Deliverd'";
+    $select_order_query = mysqli_query($connection, $query);
+    if (mysqli_num_rows($select_order_query) > 0) {
+        while ($row = mysqli_fetch_assoc($select_order_query)) {
+            if ($row['order_status'] == 'Deliverd') {
+                $order_notifications[] = "<a href='deliverd_order.php' class='list-group-link text-dark notifylink'>
+                    <li class='list-group-item'>
+                        <p>Order has been delivered to {$row['order_user_name']} at {$row['order_address']} <small class='float-right'>{$row['order_date']}</small></p>
+                    </li>
+                </a>";
+            } elseif ($row['order_status'] == 'pending') {
+                $order_notifications[] = "<a href='orders.php' class='list-group-link text-dark notifylink'>
+                    <li class='list-group-item'>
+                        <p>New order has been placed successfully <small class='float-right'>{$row['order_date']}</small></p>
+                    </li>
+                </a>";
+            }
+        }
+    }
 
-                            while ($row = mysqli_fetch_assoc($select_order_query)) {
-                                $order_id = $row['order_id'];
-                                $order_status = $row['order_status'];
-                                $order_date = $row['order_date'];
-                                $order_address = $row['order_address'];
-                                $order_user_name = $row['order_user_name'];
-                            }
-                            if ($order_status == 'Deliverd') {
-                                $deliverd = "<p>Order has been deliverd to $order_user_name at $order_address <small class='float-right'>$order_date</small></p>";
+    // Get user notifications
+    $query = "SELECT * FROM userslist";
+    $select_users_query = mysqli_query($connection, $query);
+    if (mysqli_num_rows($select_users_query) > 0) {
+        while ($row = mysqli_fetch_assoc($select_users_query)) {
+            $user_notifications[] = "<a href='users.php' class='list-group-link text-dark notifylink'>
+                <li class='list-group-item'>
+                    <p>New user has created an account ({$row['user_name']}) <small class='float-right'>" . date('Y-m-d') . "</small></p>
+                </li>
+            </a>";
+        }
+    }
 
-                                echo "<a href='deliverd_order.php' class='list-group-link text-dark notifylink'>
-                                     <li class='list-group-item'>
-                                         $deliverd 
-                                     </li>
-                                 </a>";
-                            } elseif ($order_status == 'pending') {
-                                $pending = "<p>New Order has been Placed successfully <small class='float-right'>$order_date</small></p>";
+    // Combine all notifications
+    $all_notifications = array_merge($order_notifications, $user_notifications);
 
-                                echo "<a href='orders.php' class='list-group-link text-dark notifylink'>
-                                     <li class='list-group-item'>
-                                         $pending 
-                                     </li>
-                                 </a>";
-                            }
+    // Display notifications or a "No notifications" message if none exist
+    if (empty($all_notifications)) {
+        echo "<li class='list-group-item text-center'>No notifications</li>";
+    } else {
+        foreach ($all_notifications as $notification) {
+            echo $notification;
+        }
+    }
+    ?>
+</ul>
 
-
-                            ?>
-
-                            <?php
-
-                                $query = "SELECT * FROM userslist";
-                                $select_users_query = mysqli_query($connection, $query);
-
-
-                            while ($row = mysqli_fetch_assoc($select_users_query)) {
-                                $user_id = $row['user_id'];
-                                $user_name = $row['user_name'];
-                                $date = date('Y-m-d');
-                    }
-                    
-
-                            echo "<a href='users.php' class='list-group-link text-dark notifylink'>
-                                <li class='list-group-item'>
-                                    New user has created account ($user_name) <small class='float-right'>$date</small>
-                                </li>
-                            </a>";
-
-                            ?>
-                        </ul>
 
 
 
